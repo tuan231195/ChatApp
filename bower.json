@@ -1,0 +1,19 @@
+{
+  "name": "ChatApp",
+  "authors": [
+    "vdtn359 <vdtn359@uowmail.edu.au>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,30 @@
+<form name="form" method="post" accept-charset="utf-8" role="form" class="form-horizontal" ng-submit = "$ctrl.doLogin()" novalidate>
+    <div class="form-group">
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" class="form-control" name="username" id="username"
+               placeholder="Username" tabindex="1" ng-model = "$ctrl.username" ng-keydown = "$ctrl.userError=false" required/>
+        <div class = "error text-danger" ng-show="form.username.$dirty && form.username.$invalid">
+            <span ng-show="form.username.$error.required">Username is required.</span>
+        </div>
+        <div class = "error text-danger" ng-show="$ctrl.userError">
+            <span>Username does not exists</span>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" class="form-control" name="password" id="password" ng-keydown = "$ctrl.passwordError=false"
+               placeholder="Password" tabindex="2" ng-model = "$ctrl.password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" required/>
+        <div class = "error text-danger" ng-show="form.password.$dirty && form.password.$invalid">
+            <span ng-show="form.password.$error.required">Password is required.</span>
+            <span ng-show="!form.password.$error.required && form.password.$error.pattern">Password must be at lease 8 characters, and must contain at least one number</span>
+        </div>
+        <div class = "error text-danger" ng-show="$ctrl.passwordError">
+            <span>Password is not correct</span>
+        </div>
+    </div>
+    <br/>
+    <div class="form-group ">
+        <button type="submit" id="submit" tabindex="5" class="btn btn-lg btn-primary" ng-disabled="!form.$valid">Login
+        </button>
+    </div>
+</form>

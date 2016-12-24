@@ -1,0 +1,16 @@
+<div class="mail-box">
+    <div id="site-wrapper" ng-class="{'show-nav': $ctrl.showMenu}">
+        <div id="site-canvas">
+            <div id='site-menu'>
+                <aside class="sm-side">
+                    <header-section></header-section>
+                    <navigation-section></navigation-section>
+                </aside>
+            </div>
+            <main class="lg-side">
+                <sidebar-section show-menu = "$ctrl.showMenu"></sidebar-section>
+                <div ui-view></div>
+            </main>
+        </div>
+    </div>
+</div>

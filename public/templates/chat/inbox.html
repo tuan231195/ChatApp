@@ -1,0 +1,11 @@
+<div class="inbox-body">
+    <table class="table table-inbox table-hover">
+        <tbody>
+        <tr class="unread" ng-repeat="message in $ctrl.messages | filter:  $ctrl.search" ng-click = "$ctrl.goToChat(message.from)">
+            <td class="view-message">{{message.from}}</td>
+            <td class="view-message">{{message.content}}</td>
+            <td class="view-message text-right">{{message.date | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

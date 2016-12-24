@@ -1,0 +1,52 @@
+<div class="inbox-head">
+    <a class="back" ng-click="$ctrl.goBack()"><img width="40px" height="40px" src="/images/arrow_back.png"/></a>
+    <h3 class="title">{{$ctrl.receiverName}}</h3>
+</div>
+<div class="row bootstrap snippets">
+    <div class="container">
+        <div class="col-sm-10 col-sm-offset-1">
+            <!-- DIRECT CHAT PRIMARY -->
+            <div class="box box-success direct-chat direct-chat-success">
+                <div class="box-body">
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages" scroll = "$ctrl.messages">
+                        <!-- Message. Default to the left -->
+                        <div class="direct-chat-msg" ng-repeat="message in $ctrl.messages"
+                             ng-class="{'right': message.isSender}">
+                            <div class="direct-chat-info clearfix">
+                                <span class="direct-chat-name" ng-class="!message.isSender?'pull-right': 'pull-left'">{{message.sender}}</span>
+                                <span class="direct-chat-timestamp"
+                                      ng-class="!message.isSender?'pull-left': 'pull-right'">{{message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
+                            </div>
+                            <!-- /.direct-chat-info -->
+                            <img class="direct-chat-img" ng-src="/images/{{message.isSender && $ctrl.sender.image || $ctrl.receiver.image}}"
+                                 alt="Message User Image"><!-- /.direct-chat-img -->
+                            <div class="direct-chat-text">
+                                {{message.content}}
+                            </div>
+                            <!-- /.direct-chat-text -->
+                        </div>
+                        <!-- /.direct-chat-msg -->
+                    </div>
+                    <!--/.direct-chat-messages-->
+                    <div class = "small typing" ng-show = "$ctrl.showTyping"> User {{$ctrl.receiverName}} is typing...</div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <form>
+                        <div class="input-group">
+                            <input type="text" name="message" placeholder="Type Message ..." class="form-control"
+                                   ng-model="$ctrl.content" ng-keyup = "$ctrl.stopTyping()" ng-keydown = "$ctrl.typing()">
+                            <span class="input-group-btn">
+                    <button type="submit" class="btn btn-success btn-flat" ng-click="$ctrl.send()">Send</button>
+                  </span>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-footer-->
+            </div>
+        </div>
+    </div>
+
+    <!--/.direct-chat -->
+</div>
