@@ -40,7 +40,7 @@ module.exports.signup = function (req, res) {
     }
     var user = new User();
     user.username = req.body.username;
-    user.image = "user" + (Math.round(Math.random() * 5) + 1) + ".png";
+    user.image = "user" + (Math.floor(Math.random() * 5) + 1) + ".png";
     user.generateHash(req.body.password);
     user.save(function (err) {
         var token;

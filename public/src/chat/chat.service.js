@@ -44,3 +44,5 @@ export class ChatService {
         })
     }
 }
+
+ChatService.$inject = ['$rootScope'];
