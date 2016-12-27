@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var passport = require("passport");
+var md5 = require("md5");
 var User = mongoose.model("User");
 
 function sendJSONresponse(res, status, message) {
@@ -39,8 +40,18 @@ module.exports.signup = function (req, res) {
         return;
     }
     var user = new User();
-    user.username = req.body.username;
-    user.image = "user" + (Math.floor(Math.random() * 5) + 1) + ".png";
+    var temp = req.body.username.trim();
+
+    if (temp.indexOf("@") !== -1) {
+        var email = temp;
+        var hash = md5(email);
+        user.username = email.substring(0, email.indexOf("@"));
+        user.image = "https://www.gravatar.com/avatar/" + hash;
+    }
+    else {
+        user.username = temp;
+        user.image = "images/user" + (Math.floor(Math.random() * 5) + 1) + ".png";
+    }
     user.generateHash(req.body.password);
     user.save(function (err) {
         var token;

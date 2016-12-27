@@ -1,11 +1,12 @@
 <div class="user-list">
     <div class="user-container col-xs-4 col-sm-4 col-md-4 col-lg-3"
-         ng-repeat="user in $ctrl.users | filter : {username: $ctrl.search}" ng-if = "user.username !== $ctrl.currentUser">
+         ng-repeat="user in $ctrl.users | filter : {username: $ctrl.search}"
+         ng-if="user.username !== $ctrl.currentUser">
         <a href="#!/chatbox?receiver={{user.username}}">
             <div class="user">
                 <div class="col-sm-12">
                     <img width="70px" height="70px"
-                         ng-src="/images/{{user.image}}"
+                         ng-src="{{user.image}}"
                          alt="Debbie Schmidt"
                          class="user-image img-responsive img-circle"/>
                 </div>

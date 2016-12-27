@@ -3,7 +3,7 @@ export default class NavigationController {
         this.authService = AuthService;
         let currentUser = this.authService.currentUser();
         this.username = currentUser.username;
-        this.image = "/images/" + currentUser.image;
+        this.image = currentUser.image;
     }
 };
 
