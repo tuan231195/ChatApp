@@ -11,6 +11,8 @@ module.exports = function (http) {
             getUserList(function (allUsers) {
                 io.emit('userList', allUsers);
             });
+
+            socket.broadcast.emit("login", {username: user.username});
         });
 
         socket.on("getUser", function (query) {
@@ -31,7 +33,7 @@ module.exports = function (http) {
             getUserList(function (allUsers) {
                 socket.broadcast.emit('userList', allUsers);
             });
-
+            socket.broadcast.emit("logout", {username: user.username});
         });
 
         socket.on("getAll", function (user) {
