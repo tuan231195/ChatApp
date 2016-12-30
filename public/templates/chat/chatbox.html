@@ -19,7 +19,7 @@
                                       ng-class="!message.isSender?'pull-left': 'pull-right'">{{message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
                             </div>
                             <!-- /.direct-chat-info -->
-                            <img class="direct-chat-img" ng-src="/images/{{message.isSender && $ctrl.sender.image || $ctrl.receiver.image}}"
+                            <img class="direct-chat-img" ng-src="{{message.isSender && $ctrl.sender.image || $ctrl.receiver.image}}"
                                  alt="Message User Image"><!-- /.direct-chat-img -->
                             <div class="direct-chat-text">
                                 {{message.content}}

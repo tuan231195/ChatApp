@@ -2,7 +2,7 @@
 import angular from "angular";
 import 'angular-ui-router';
 import 'angular-route';
-import 'angular-ui-bootstrap';
+import "angular-ui-bootstrap";
 import "./auth/auth.module";
 import "./chat/chat.module";
 import authConfig from "./config/route";

@@ -1,8 +1,8 @@
 export default class ProfileController {
 
-    constructor(AuthService, $modal) {
+    constructor(AuthService, $uibModal) {
         this.authService = AuthService;
-        this.modal = $modal;
+        this.modal = $uibModal;
         this.user = this.authService.currentUser();
         this.confirmPassword = "";
         this.newPassword = "";
@@ -33,4 +33,4 @@ export default class ProfileController {
     }
 };
 
-ProfileController.$inject = ['AuthService', '$modal'];
+ProfileController.$inject = ['AuthService', '$uibModal'];

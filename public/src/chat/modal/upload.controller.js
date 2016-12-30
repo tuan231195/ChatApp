@@ -1,13 +1,13 @@
 export default class ProfileController {
 
-    constructor($modalInstance) {
+    constructor($uibModalInstance) {
         this.modal = {
             cancel: function () {
-                $modalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
             }
         }
     };
 }
 
 ProfileController
-    .$inject = ['$modalInstance'];
+    .$inject = ['$uibModalInstance'];
