@@ -3,5 +3,8 @@ export const UPLOAD_COMPONENT_NAME = "uploadModal";
 
 export const uploadComponent = {
     templateUrl: "templates/profile/upload-image.html",
-    controller: uploadController
+    controller: uploadController,
+    bindings: {
+        'onClose': "&"
+    }
 };

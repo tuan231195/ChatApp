@@ -24,11 +24,13 @@ export default class ProfileController {
 
     showModal() {
         this.modalInstance = this.modal.open({
-            template: "<upload-modal on-close ='$ctrl.closeModal()' ></upload-modal>"
+            template: "<upload-modal on-close='$ctrl.closeModal()'></upload-modal>"
         });
     }
 
     closeModal() {
+        console.log("Hi");
+        this.modalInstance.dismiss("cancel");
         this.modalInstance = null;
     }
 };

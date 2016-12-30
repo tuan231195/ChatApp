@@ -1,13 +1,5 @@
 export default class ProfileController {
-
-    constructor($uibModalInstance) {
-        this.modal = {
-            cancel: function () {
-                $uibModalInstance.dismiss('cancel');
-            }
-        }
-    };
+    $onInit(){
+        console.log(this.onClose);
+    }
 }
-
-ProfileController
-    .$inject = ['$uibModalInstance'];
