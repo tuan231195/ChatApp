@@ -27,6 +27,9 @@ export default function AuthConfig($stateProvider, $httpProvider, $urlRouterProv
     }).state("chatbox", {
         url: '/chatbox',
         template: '<chatbox-section></chatbox-section>'
+    }).state("profile", {
+        url: "/profile",
+        template: '<profile-section></profile-section>'
     });
 }
 

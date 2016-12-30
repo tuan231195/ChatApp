@@ -1,20 +1,23 @@
-<form name="form" method="post" accept-charset="utf-8" role="form" class="form-horizontal" ng-submit = "$ctrl.doSignup()" novalidate>
+<form name="form" method="post" accept-charset="utf-8" role="form" class="form-horizontal" ng-submit="$ctrl.doSignup()"
+      novalidate>
     <div class="form-group">
         <label for="username" class="sr-only">Username</label>
         <input type="text" class="form-control" name="username" id="username" ng-model="$ctrl.username"
-               placeholder="Username" tabindex="1" ng-keydown = "$ctrl.userError=false"/>
-        <div class = "error text-danger" ng-show="!$ctrl.useDefault && form.username.$dirty && $ctrl.username.trim().length === 0">
+               placeholder="Username" tabindex="1" ng-keydown="$ctrl.userError=false"/>
+        <div class="error text-danger"
+             ng-show="!$ctrl.useDefault && form.username.$dirty && $ctrl.username.trim().length === 0">
             <span>Username is required.</span>
         </div>
-        <div class = "error text-danger" ng-show="$ctrl.userError">
+        <div class="error text-danger" ng-show="$ctrl.userError">
             <span>Username already exists</span>
         </div>
     </div>
     <div class="form-group ">
         <label for="password" class="sr-only">Password</label>
         <input type="password" class="form-control" name="password" id="password"
-               placeholder="Password" tabindex="2" ng-model="$ctrl.password" ng-model-options="{allowInvalid: true}" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" required/>
-        <div class = "error text-danger" ng-show="form.password.$dirty && form.password.$invalid">
+               placeholder="Password" tabindex="2" ng-model="$ctrl.password" ng-model-options="{allowInvalid: true}"
+               ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" required/>
+        <div class="error text-danger" ng-show="form.password.$dirty && form.password.$invalid">
             <span ng-show="form.password.$error.required">Password is required.</span>
             <span ng-show="!form.password.$error.required && form.password.$error.pattern">Password must be at lease 8 characters, and must contain at least one number</span>
         </div>
@@ -22,21 +25,34 @@
     <div class="form-group ">
         <label for="confirm_password" class="sr-only">Confirm Password</label>
         <input type="password" class="form-control" name="confirm_password" id="confirm_password"
-               placeholder="Confirm Password" tabindex="2" ng-model = "$ctrl.confirmPassword" required/>
-        <div class = "error text-danger" ng-show="form.confirm_password.$dirty && form.confirm_password.$invalid">
+               placeholder="Confirm Password" tabindex="2" ng-model="$ctrl.confirmPassword" required/>
+        <div class="error text-danger" ng-show="form.confirm_password.$dirty && form.confirm_password.$invalid">
             <span ng-show="form.confirm_password.$error.required">Please confirm your password</span>
         </div>
-        <div class = "error text-danger" ng-show="!form.confirm_password.$invalid && !$ctrl.isPasswordMatch()">
+        <div class="error text-danger" ng-show="!form.confirm_password.$invalid && !$ctrl.isPasswordMatch()">
             <span>Passwords do not match</span>
         </div>
     </div>
-    <div class="checkbox">
-        <label class="control-label" for="use_default">
-            <input type="checkbox" name="remember_me" id="use_default" ng-model = "$ctrl.useDefault" value="1" class="" tabindex="3"/> Use default
-        </label>
+    <div class="form-group">
+        <label for="sex" class="sr-only">Gender</label>
+        <select class="form-control" id="sex" name="sex" required tabindex="3" ng-model="$ctrl.gender">
+            <option disabled="" value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+
     </div>
-    <br/>
+    <div class="form-group">
+        <div class="checkbox">
+            <label class="control-label" for="anonymous">
+                <input type="checkbox" name="useDefault" id="anonymous" ng-model="$ctrl.useDefault" value="1" class=""
+                       tabindex="4"/> Anonymous
+            </label>
+        </div>
+    </div>
     <div class="form-group ">
-        <button type="submit" id="submit" tabindex="5" class="btn btn-lg btn-primary" ng-disabled = "!$ctrl.canSubmit() || !form.$valid">Sign up</button>
+        <button type="submit" id="submit" tabindex="5" class="btn btn-lg btn-primary"
+                ng-disabled="!$ctrl.canSubmit() || !form.$valid">Sign up
+        </button>
     </div>
 </form>

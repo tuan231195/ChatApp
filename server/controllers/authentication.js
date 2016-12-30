@@ -41,6 +41,7 @@ module.exports.signup = function (req, res) {
     }
     var user = new User();
     var temp = req.body.username.trim();
+    user.gender = req.body.gender;
 
     if (temp.indexOf("@") !== -1) {
         var email = temp;
@@ -50,7 +51,12 @@ module.exports.signup = function (req, res) {
     }
     else {
         user.username = temp;
-        user.image = "images/user" + (Math.floor(Math.random() * 5) + 1) + ".png";
+        if (user.gender === "male") {
+            user.image = "images/male" + (Math.floor(Math.random() * 5) + 1) + ".png";
+        } else if (user.gender === "female") {
+            user.image = "images/female" + (Math.floor(Math.random() * 5) + 1) + ".png";
+        }
+
     }
     user.generateHash(req.body.password);
     user.save(function (err) {

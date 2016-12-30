@@ -17,6 +17,8 @@ export default class SignupController {
     canSubmit() {
         if (!this.isPasswordMatch())
             return false;
+        if (this.gender === "")
+            return false;
         return !(!this.useDefault && this.username.trim().length === 0);
     }
 
@@ -26,7 +28,11 @@ export default class SignupController {
         }
         console.log("User " + this.username + " is registering");
         var ctrl = this;
-        this.authService.signup({username: this.username, password: this.password}).then(function () {
+        this.authService.signup({
+            username: this.username,
+            password: this.password,
+            gender: this.gender
+        }).then(function () {
             ctrl.state.go('index');
         }, function (error) {
             console.error(error);

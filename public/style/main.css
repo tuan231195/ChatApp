@@ -4,6 +4,7 @@
 @import 'online.css';
 @import 'nav.css';
 @import 'chatbox.css';
+@import 'profile.css';
 
 body {
     font-family: Open Sans;

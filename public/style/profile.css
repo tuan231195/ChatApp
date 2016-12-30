@@ -1,0 +1,8 @@
+.transparent {
+    background: lightgrey;
+    opacity: 0.3;
+}
+
+.profile-image {
+    cursor: pointer;
+}
