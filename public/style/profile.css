@@ -1,8 +1,32 @@
-.transparent {
-    background: lightgrey;
-    opacity: 0.3;
-}
 
 .profile-image {
+    cursor: pointer;
+    width: 180px !important;
+    height: 180px !important;
+}
+
+img.droplet-preview {
+    height: 200px;
+    width: 300px;
+    display: block;
+    margin-bottom: 20px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+div.add-files {
+    float: left;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+div.add-files input.droplet-single {
+    position: absolute;
+    top: -10px;
+    font-size: 28px;
+    left: -90px;
+    z-index: 1001;
+    opacity: 0.0001;
     cursor: pointer;
 }

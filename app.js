@@ -10,7 +10,8 @@ require('./server/model/db');
 require('./server/config/passport');
 
 
-var routesApi = require('./server/routes/api');
+var authentication = require('./server/routes/authentication');
+var profile = require("./server/routes/profile");
 
 var app = express();
 
@@ -24,12 +25,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 // app.use('/', routes);
-app.use('/api', routesApi);
+app.use('/auth', authentication);
+app.use('/profile', profile);
 
 app.use(function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
 
 
 // error handlers

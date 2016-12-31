@@ -7,7 +7,7 @@ import {INBOX_COMPONENT_NAME, inboxComponent} from "./inbox/inbox.component";
 import {NAVIGATION_COMPONENT_NAME, navigationComponent} from "../common/navigation/navigation.component";
 import {SIDEBAR_COMPONENT_NAME, sidebarComponent} from "../common/sidebar/sidebar.component";
 import {PROFILE_COMPONENT_NAME, profileComponent} from "./profile/profile.component";
-import {UPLOAD_COMPONENT_NAME, uploadComponent} from "./modal/upload.component";
+import {UPLOAD_CONTROlLER_NAME, UploadController} from "./modal/upload.controller";
 import {SCROLL_DIRECTIVE_NAME, scrollDirective} from "../common/scroll/scroll.directive";
 
 angular.module("chat", [])
@@ -19,6 +19,6 @@ angular.module("chat", [])
     .component(INBOX_COMPONENT_NAME, inboxComponent)
     .component(SIDEBAR_COMPONENT_NAME, sidebarComponent)
     .component(PROFILE_COMPONENT_NAME, profileComponent)
-    .component(UPLOAD_COMPONENT_NAME, uploadComponent)
+    .controller(UPLOAD_CONTROlLER_NAME, UploadController)
     .service(CHAT_SERVICE_NAME, ChatService)
     .directive(SCROLL_DIRECTIVE_NAME, scrollDirective);

@@ -1,18 +1,31 @@
 <div class="modal-content">
     <form id="addReview" name="addReview" role="form" class="form-horizontal">
         <div class="modal-header">
-            <button type="button" ng-click="$ctrl.onClose()" class="close"><span
+            <button type="button" ng-click="onClose()" class="close"><span
                     aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h4 id="myModalLabel" class="modal-title">Upload your profile image</h4>
         </div>
         <div class="modal-body">
-            <input id="input-id" type="file" class="file" data-preview-file-type="image">
+            <droplet ng-model="interface">
+                <img class="img-responsive img-thumbnail droplet-preview" src="/images/default.jpeg" ng-show="!file"/>
+                <div ng-repeat="model in interface.getFiles(interface.FILE_TYPES.VALID)">
+                    <droplet-preview ng-model="model" ng-show="model.isImage()"
+                                     class="img-responsive img-thumbnail"></droplet-preview>
+                </div>
+            </droplet>
+            <div class="add-files">
+                <input type="button" class="btn btn-primary" value="Select image"/>
+                <droplet-upload-single ng-model="interface"></droplet-upload-single>
+            </div>
+            <div class="clearfix"></div>
         </div>
         <div class="modal-footer">
-            <button ng-click="$ctrl.onClose()" type="button" class="btn btn-default">
+            <button ng-click="onClose()" type="button" class="btn btn-default">
                 Cancel
             </button>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <input type="button" class="btn btn-primary" value="Update"
+                   ng-click="interface.uploadFiles()"
+                   ng-disabled="!interface.isReady()"/>
         </div>
     </form>
 </div>
