@@ -23,7 +23,8 @@ var router = express.Router();
 
 var controllers = require("../controllers/profile");
 
-/* GET home page. */
 router.post('/upload', auth, multipartUpload, controllers.upload);
+
+router.post('/update', auth, controllers.update);
 
 module.exports = router;

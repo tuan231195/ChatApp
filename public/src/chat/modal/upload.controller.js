@@ -1,13 +1,11 @@
 export const UPLOAD_CONTROlLER_NAME = "uploadController";
 export class UploadController {
-    constructor($rootScope, $scope, $window, AuthService) {
+    constructor($rootScope, $scope, $window, AuthService, $timeout) {
         $scope.file = null;
         $scope.$on('$dropletReady', function whenDropletReady() {
             $scope.interface.allowedExtensions(['png', 'jpg', 'bmp', 'gif']);
             $scope.interface.setMaximumValidFiles(2);
-            if ($window.localStorage['chat-token']) {
-                $scope.interface.setRequestHeaders({"Authorization": 'Bearer ' + $window.localStorage['chat-token']});
-            }
+            $scope.interface.setRequestHeaders({"Authorization": 'Bearer ' + AuthService.getToken()});
             $scope.interface.setRequestUrl("/profile/upload");
         });
 
@@ -41,4 +39,4 @@ export class UploadController {
     }
 }
 
-UploadController.$inject = ["$rootScope", "$scope", "$window", "AuthService"];
+UploadController.$inject = ["$rootScope", "$scope", "$window", "AuthService", "$timeout"];

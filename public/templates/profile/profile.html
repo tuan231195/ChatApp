@@ -1,4 +1,4 @@
-<div class = "profile-page">
+<div class="profile-page">
     <div class="inbox-head">
         <a class="back" ng-click="$ctrl.goBack()"><img width="40px" height="40px" src="/images/arrow_back.png"/></a>
         <h3 class="title">Profile</h3>
@@ -9,20 +9,23 @@
                 <h3>Your profile</h3>
             </div>
             <img class="profile-image img-responsive img-circle center-block"
-                 ng-src="{{$ctrl.user.image}}" ng-click = "$ctrl.showModal()"/>
+                 ng-src="{{$ctrl.user.image}}" ng-click="$ctrl.showModal()"/>
             <br/>
             <br/>
             <br/>
-            <form class="form" name="form">
+            <div class="alert alert-danger" ng-show = "$ctrl.error">{{$ctrl.error}}</div>
+            <div class="alert alert-success" ng-show = "$ctrl.updated">Password has been updated</div>
+            <form class="form" name="form" ng-submit="$ctrl.update()">
                 <div class="form-group">
                     <label class="control-label" for="username">Username</label>
-                    <input class="form-control" type="text" name="username" id="username" value="{{$ctrl.user.username}}"
+                    <input class="form-control" type="text" name="username" id="username"
+                           value="{{$ctrl.user.username}}"
                            tabindex="1" disabled/>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="old_password">Old password</label>
-                    <input class="form-control" type="text" name="old_password" id="old_password"
+                    <input class="form-control" type="password" name="old_password" id="old_password" ng-change = "$ctrl.error = false"
                            ng-model="$ctrl.oldPassword" tabindex="2" required/>
                     <div class="error text-danger" ng-show="form.old_password.$dirty && form.old_password.$invalid">
                         <span ng-show="form.old_password.$error.required">Password is required.</span>
@@ -30,7 +33,7 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="new_password">New password</label>
-                    <input class="form-control" type="text" name="new_password" id="new_password"
+                    <input class="form-control" type="password" name="new_password" id="new_password"
                            ng-model="$ctrl.newPassword" ng-model-options="{allowInvalid: true}"
                            ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" tabindex="3" required/>
                     <div class="error text-danger" ng-show="form.new_password.$dirty && form.new_password.$invalid">
@@ -40,13 +43,15 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="confirm_password">Confirm your new password</label>
-                    <input class="form-control" type="text" name="confirm_password" id="confirm_password"
+                    <input class="form-control" type="password" name="confirm_password" id="confirm_password"
                            ng-model="$ctrl.confirmPassword"
                            tabindex="4" required/>
-                    <div class="error text-danger" ng-show="form.confirm_password.$dirty && form.confirm_password.$invalid">
+                    <div class="error text-danger"
+                         ng-show="form.confirm_password.$dirty && form.confirm_password.$invalid">
                         <span ng-show="form.confirm_password.$error.required">Please confirm your password</span>
                     </div>
-                    <div class="error text-danger" ng-show="!form.confirm_password.$invalid && !$ctrl.isPasswordMatch()">
+                    <div class="error text-danger"
+                         ng-show="!form.confirm_password.$invalid && !$ctrl.isPasswordMatch()">
                         <span>Passwords do not match</span>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import {ONLINE_COMPONENT_NAME, onlineComponent} from "./chatlist/online.component";
 import {CHATBOX_COMPONENT_NAME, chatBoxComponent} from "./chatbox/chatbox.component";
 import {CHAT_SERVICE_NAME, ChatService} from "./chat.service";
+import {PROFILE_SERVICE_NAME, ProfileService} from "./profile.service";
 import {INDEX_COMPONENT_NAME, indexComponent} from "./index.component";
 import {HEADER_COMPONENT_NAME, headerComponent} from "../common/header/header.component";
 import {INBOX_COMPONENT_NAME, inboxComponent} from "./inbox/inbox.component";
@@ -21,4 +22,5 @@ angular.module("chat", [])
     .component(PROFILE_COMPONENT_NAME, profileComponent)
     .controller(UPLOAD_CONTROlLER_NAME, UploadController)
     .service(CHAT_SERVICE_NAME, ChatService)
+    .service(PROFILE_SERVICE_NAME, ProfileService)
     .directive(SCROLL_DIRECTIVE_NAME, scrollDirective);

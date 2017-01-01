@@ -38,14 +38,14 @@ export class AuthService {
 
     login(user) {
         var ctrl = this;
-        return this.http.post('/api/login', user).then(function (response) {
+        return this.http.post('/auth/login', user).then(function (response) {
             ctrl.saveToken(response.data.token);
         });
     }
 
     signup(user) {
         var ctrl = this;
-        return this.http.post('/api/register', user).then(function (response) {
+        return this.http.post('/auth/register', user).then(function (response) {
             ctrl.saveToken(response.data.token);
         });
     }
