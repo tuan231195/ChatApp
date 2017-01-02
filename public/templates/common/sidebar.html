@@ -2,9 +2,10 @@
     <a class="toggle-nav btn btn-success" ng-click="$ctrl.showMenu = !$ctrl.showMenu"><i
             class="fa fa-bars"></i></a>
     <h3>{{$ctrl.title}}</h3>
-    <form action="#" class="pull-right position">
+
+    <form action="#" class="search pull-right position">
         <div class="input-append">
-            <input type="text" class="sr-input" ng-model = "$ctrl.search" placeholder="{{$ctrl.searchTitle}}" ng-change = "$ctrl.broadcastChange()">
+            <input type="text" class="sr-input" ng-model="$ctrl.search" placeholder="{{$ctrl.searchTitle}}" ng-change="$ctrl.broadcastChange()">
             <button class="btn sr-btn" type="button"><i class="fa fa-search"></i></button>
         </div>
     </form>
