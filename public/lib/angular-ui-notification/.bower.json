@@ -1,0 +1,48 @@
+{
+  "name": "angular-ui-notification",
+  "version": "0.3.5",
+  "homepage": "https://github.com/alexcrack/angular-ui-notification",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jermorin/angular-ui-notification"
+  },
+  "authors": [
+    "Alexey Avramchik"
+  ],
+  "description": "Angular.js service providing simple notifications using Bootstrap 3 styles with css transitions for animating",
+  "main": [
+    "dist/angular-ui-notification.css",
+    "dist/angular-ui-notification.js"
+  ],
+  "keywords": [
+    "angular",
+    "notification",
+    "notify",
+    "bootstrap"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    "build"
+  ],
+  "dependencies": {
+    "angular": "^1.5.x"
+  },
+  "devDependencies": {
+    "bootstrap": "^3.3.x"
+  },
+  "_release": "0.3.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.3.5",
+    "commit": "1e25898626c7b48a7e363cc1644e573bf041d795"
+  },
+  "_source": "https://github.com/MikhailRoot/angular-ui-notification.git",
+  "_target": "0.3.5",
+  "_originalSource": "MikhailRoot/angular-ui-notification"
+}
