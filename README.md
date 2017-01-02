@@ -1,5 +1,5 @@
 # ChatApp
-npm install
-bower install 
-grunt release
-node app.js
+npm install <br/>
+bower install <br/>
+grunt release <br/>
+node app.js <br/>
