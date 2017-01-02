@@ -101,7 +101,11 @@ export default class ChatboxController {
                 return;
             }
             ctrl.chatService.emit("untyping", {sender: ctrl.senderName, receiver: ctrl.receiverName});
-        }, 2000);
+        }, 1000);
+    }
+
+    $onDestroy() {
+        this.chatService.getSocket().removeAllListeners();
     }
 };
 

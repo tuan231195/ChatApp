@@ -24,6 +24,10 @@ export default class IndexChatController {
             ctrl.notificationService.primary({message: `<b>${data.sender}</b>: ${data.content}`});
         });
     }
+
+    $onDestroy() {
+        this.chatService.getSocket().removeAllListeners();
+    }
 }
 
 IndexChatController.$inject = ['AuthService', 'ChatService', 'Notification'];

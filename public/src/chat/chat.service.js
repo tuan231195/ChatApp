@@ -43,6 +43,10 @@ export class ChatService {
             });
         })
     }
+
+    getSocket() {
+        return this.socket;
+    }
 }
 
 ChatService.$inject = ['$rootScope'];

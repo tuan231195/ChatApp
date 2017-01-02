@@ -35,6 +35,10 @@ export default class InboxController {
     goToChat(user) {
         this.location.path("/chatbox").search({receiver: user});
     }
+
+    $onDestroy() {
+        this.chatService.getSocket().removeAllListeners();
+    }
 };
 
 InboxController.$inject = ['AuthService', 'ChatService', '$scope', "$location"];
