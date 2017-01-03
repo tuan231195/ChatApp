@@ -3,6 +3,7 @@ export default class SignupController {
         this.username = "";
         this.password = "";
         this.confirmPassword = "";
+        this.gender = "";
         this.authService = Auth;
         this.state = $state;
     }
@@ -16,6 +17,7 @@ export default class SignupController {
             return false;
         if (this.gender === "")
             return false;
+        return true;
     }
 
     doSignup() {
