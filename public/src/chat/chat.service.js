@@ -10,7 +10,6 @@ export class ChatService {
             this.socket.emit("online", user);
             var svc = this;
             this.on("userList", function (users) {
-                console.log("userList");
                 svc.users = users;
                 svc.rootScope.$broadcast("usersChanged", {users: users});
             });
@@ -19,7 +18,8 @@ export class ChatService {
     }
 
     disconnect(user) {
-        this.socket.emit("offline", user);
+        if (user)
+            this.socket.emit("offline", user);
     }
 
     on(eventName, callback) {

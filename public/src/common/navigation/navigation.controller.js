@@ -7,10 +7,13 @@ export default class NavigationController {
     }
 
     logout(){
-        this.chatService.emit("offline", this.authService.currentUser());
-        this.authService.logout();
-        this.location.path("/authentication");
-        this.window.location.reload();
+        let user = this.authService.currentUser();
+        if (user){
+            this.chatService.emit("offline", user);
+            this.authService.logout();
+            this.location.path("/authentication");
+            this.window.location.reload();
+        }
     }
 };
 

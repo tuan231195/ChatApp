@@ -20,15 +20,7 @@ export class AuthService {
             let payload = JSON.parse(this.window.atob(token.split('.')[1]));
             //if the token has expired
 
-            if (payload.exp > Date.now() / 1000) {
-                return true;
-            }
-            else {
-                if (this.isAnonymous) {
-                    this.deleteAnonymous();
-                }
-                return false;
-            }
+            return payload.exp > Date.now() / 1000;
         }
         return false;
     }

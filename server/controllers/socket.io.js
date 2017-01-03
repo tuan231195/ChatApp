@@ -166,7 +166,6 @@ module.exports = function (http) {
     function handleOffline(socket, username){
         delete onlineUserMap[username];
         getUserList(function (allUsers) {
-            console.log(allUsers);
             socket.broadcast.emit('userList', allUsers);
         });
         socket.broadcast.emit("offline", {username: username});
