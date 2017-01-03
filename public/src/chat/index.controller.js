@@ -12,12 +12,12 @@ export default class IndexChatController {
         let ctrl = this;
 
         this.chatService.connect(currentUser);
-        this.chatService.on("login", function (user) {
-            ctrl.notificationService.success({message: `<b>${user.username}</b> is now logged in`});
+        this.chatService.on("online", function (user) {
+            ctrl.notificationService.success({message: `<b>${user.username}</b> is now online`});
         });
 
-        this.chatService.on("logout", function (user) {
-            ctrl.notificationService.error({message: `<b>${user.username}</b> just logged out`});
+        this.chatService.on("offline", function (user) {
+            ctrl.notificationService.error({message: `<b>${user.username}</b> is offline`});
         });
 
         this.chatService.on("newMsg", function (data) {
@@ -26,7 +26,9 @@ export default class IndexChatController {
     }
 
     $onDestroy() {
-        this.chatService.getSocket().removeAllListeners();
+        this.chatService.getSocket().off("online");
+        this.chatService.getSocket().off("offline");
+        this.chatService.getSocket().off("newMsg");
     }
 }
 

@@ -105,7 +105,11 @@ export default class ChatboxController {
     }
 
     $onDestroy() {
-        this.chatService.getSocket().removeAllListeners();
+        this.chatService.getSocket().off("newMsg");
+        this.chatService.getSocket().off("user");
+        this.chatService.getSocket().off("chat");
+        this.chatService.getSocket().off("typing");
+        this.chatService.getSocket().off("untyping");
     }
 };
 

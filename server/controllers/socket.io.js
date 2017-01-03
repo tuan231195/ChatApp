@@ -5,106 +5,139 @@ module.exports = function (http) {
     var onlineUserMap = {};
     var io = require('socket.io')(http);
     io.on('connection', function (socket) {
-        socket.on("login", function (user) {
-            console.log("User " + user.username + " is now connected");
-            onlineUserMap[user.username] = {socketid: socket.id, username: user.username, image: user.image};
-            getUserList(function (allUsers) {
-                io.emit('userList', allUsers);
+            socket.on("online", function (user) {
+                if (!onlineUserMap[user.username]) {
+                    var isAnonymous = user.isAnonymous || false;
+                    console.log("User " + user.username + " is now online");
+                    onlineUserMap[user.username] = {
+                        socketid: socket.id,
+                        username: user.username,
+                        image: user.image,
+                        isAnonymous: isAnonymous
+                    };
+                    getUserList(function (allUsers) {
+                        io.emit('userList', allUsers);
+                    });
+                    socket.broadcast.emit("online", {username: user.username});
+                }
             });
 
-            socket.broadcast.emit("login", {username: user.username});
-        });
-
-        socket.on("getUser", function (query) {
-            if (!query.user) {
-                return;
-            }
-            User.findOne({"username": query.user}, function (err, user) {
-                if (err) {
-                    console.error(err);
+            socket.on("getUser", function (query) {
+                if (!query.user) {
                     return;
                 }
-                tmp = {username: user.username, image: user.image};
-                socket.emit("user", tmp);
-            });
-        });
-        socket.on("logout", function (username) {
-            delete onlineUserMap[username];
-            getUserList(function (allUsers) {
-                socket.broadcast.emit('userList', allUsers);
-            });
-            socket.broadcast.emit("logout", {username: user.username});
-        });
-
-        socket.on("getAll", function (user) {
-            updateInboxes(socket, user);
-        });
-
-
-        socket.on("getChat", function (chat) {
-            getChatForUsers(chat.user1, chat.user2, function (chat) {
-                if (chat) {
-                    socket.emit("chat", chat);
-                }
-            });
-        });
-
-        socket.on("typing", function (chat) {
-            if (onlineUserMap[chat.receiver]) {
-                var socketid = onlineUserMap[chat.receiver].socketid;
-                socket.broadcast.to(socketid).emit("typing", {
-                    username: chat.sender
-                });
-            }
-        });
-
-        socket.on("untyping", function (chat) {
-            if (onlineUserMap[chat.receiver]) {
-                var socketid = onlineUserMap[chat.receiver].socketid;
-                socket.broadcast.to(socketid).emit("untyping", {
-                    username: chat.sender
-                });
-            }
-        });
-
-        socket.on("send", function (message) {
-            console.log(message.sender + " sends message to " + message.receiver + ": " + message.content);
-            getChatForUsers(message.sender, message.receiver, function (chat) {
-                var tmp = {};
-                if (!chat) {
-                    chat = new Chat();
-                    chat.user1 = message.sender;
-                    chat.user2 = message.receiver;
-                }
-                if (chat.user1 == message.sender) {
-                    tmp.order = true;
-                }
-                else {
-                    tmp.order = false;
-                }
-                tmp.body = message.content;
-                chat.messages.push(tmp);
-                chat.lastMessage = tmp.body;
-                chat.lastChatTime = Date.now();
-
-                chat.save(function (err) {
+                User.findOne({"username": query.user}, function (err, user) {
                     if (err) {
                         console.error(err);
                         return;
                     }
-                    if (!onlineUserMap[message.receiver]) {
-                        return;
+                    tmp = {username: user.username, image: user.image};
+                    socket.emit("user", tmp);
+                });
+            });
+            socket.on("offline", function (user) {
+                    var username = user.username;
+                    console.log("User " + user.username + " is now offline");
+                    if (onlineUserMap[username] && onlineUserMap[username].isAnonymous) {
+                        User.remove({username: username}, function (err) {
+                            if (err) {
+                                console.error("Error removing user: " + err);
+                                return;
+                            }
+                            Chat.remove({
+                                "$or": [{
+                                    "user1": username,
+                                }, {
+                                    "user2": username,
+                                }]
+                            }, function (err) {
+                                if (err) {
+                                    console.error("Error removing chat: " + err);
+                                    return;
+                                }
+                                handleOffline(socket, username);
+                            });
+                        });
                     }
-                    var socketid = onlineUserMap[message.receiver].socketid;
-                    socket.broadcast.to(socketid).emit("newMsg", {
-                        sender: message.sender,
-                        content: message.content,
-                        date: message.date
+                    else {
+                        handleOffline(socket, username);
+                    }
+
+                }
+            );
+
+            socket.on("getAll", function (user) {
+                updateInboxes(socket, user);
+            });
+
+
+            socket.on("getChat", function (chat) {
+                getChatForUsers(chat.user1, chat.user2, function (chat) {
+                    if (chat) {
+                        socket.emit("chat", chat);
+                    }
+                });
+            });
+
+            socket.on("typing", function (chat) {
+                if (onlineUserMap[chat.receiver]) {
+                    var socketid = onlineUserMap[chat.receiver].socketid;
+                    socket.broadcast.to(socketid).emit("typing", {
+                        username: chat.sender
+                    });
+                }
+            });
+
+            socket.on("untyping", function (chat) {
+                if (onlineUserMap[chat.receiver]) {
+                    var socketid = onlineUserMap[chat.receiver].socketid;
+                    socket.broadcast.to(socketid).emit("untyping", {
+                        username: chat.sender
+                    });
+                }
+            });
+
+            socket.on("send", function (message) {
+                console.log(message.sender + " sends message to " + message.receiver + ": " + message.content);
+                getChatForUsers(message.sender, message.receiver, function (chat) {
+                    var tmp = {};
+                    if (!chat) {
+                        chat = new Chat();
+                        chat.user1 = message.sender;
+                        chat.user2 = message.receiver;
+                    }
+                    if (chat.user1 == message.sender) {
+                        tmp.order = true;
+                    }
+                    else {
+                        tmp.order = false;
+                    }
+                    tmp.body = message.content;
+                    chat.messages.push(tmp);
+                    chat.lastMessage = tmp.body;
+                    chat.lastChatTime = Date.now();
+
+                    chat.save(function (err) {
+                        if (err) {
+                            console.error(err);
+                            return;
+                        }
+                        if (!onlineUserMap[message.receiver]) {
+                            return;
+                        }
+                        var socketid = onlineUserMap[message.receiver].socketid;
+                        socket.broadcast.to(socketid).emit("newMsg", {
+                            sender: message.sender,
+                            content: message.content,
+                            date: message.date
+                        });
                     });
                 });
             });
-        });
-    });
+        }
+    )
+    ;
+
 
     function getUserList(callback) {
         var allUsers = [];
@@ -128,6 +161,15 @@ module.exports = function (http) {
             }
             callback(allUsers);
         });
+    }
+
+    function handleOffline(socket, username){
+        delete onlineUserMap[username];
+        getUserList(function (allUsers) {
+            console.log(allUsers);
+            socket.broadcast.emit('userList', allUsers);
+        });
+        socket.broadcast.emit("offline", {username: username});
     }
 
     function getChatForUsers(user1, user2, callback) {
@@ -181,4 +223,5 @@ module.exports = function (http) {
             }
         });
     }
-};
+}
+;

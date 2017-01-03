@@ -2,9 +2,8 @@
 
 export const MAIN_CONTROLLER_NAME = "mainController";
 export class MainController {
-    constructor($state, $rootScope, $location, AuthService) {
+    constructor($state, $rootScope, $location, AuthService, ChatService,  $window) {
         let evaluatePath = () => {
-            console.log($location.path());
             if ($location.path() === "/authenticate") {
                 $state.go("authenticate.login");
             }
@@ -33,7 +32,14 @@ export class MainController {
         $rootScope.$on("$locationChangeSuccess", () => {
             evaluatePath();
         });
+
+        $window.onbeforeunload = function(){
+            if (AuthService.isAnonymous) {
+                ChatService.disconnect(AuthService.currentUser());
+                AuthService.logout();
+            }
+        };
     }
 }
 
-MainController.$inject = ['$state', '$rootScope', '$location', 'AuthService'];
+MainController.$inject = ['$state', '$rootScope', '$location', 'AuthService', 'ChatService', '$window'];

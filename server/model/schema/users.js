@@ -20,9 +20,12 @@ userSchema.methods.isValidPassword = function (password) {
 };
 
 
-userSchema.methods.generateJwt = function () {
-    var expiry = new Date();
-    expiry.setDate(expiry.getDate() + 7);
+userSchema.methods.generateJwt = function (expiry) {
+    if (!expiry)
+    {
+        expiry = new Date();
+        expiry.setDate(expiry.getDate() + 7);
+    }
     return jwt.sign({
         _id: this._id,
         username: this.username,

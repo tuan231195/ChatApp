@@ -1,10 +1,11 @@
 export default class SidebarController {
-    constructor($location, $rootScope) {
+    constructor($location, $rootScope, AuthService) {
 
         this.showMenu = false;
         this.rootScope = $rootScope;
+        this.authService = AuthService;
 
-        var ctrl = this;
+        let ctrl = this;
 
         evaluatePath();
         $rootScope.$on("$locationChangeSuccess", () => {
@@ -37,4 +38,4 @@ export default class SidebarController {
 
 };
 
-SidebarController.$inject = ['$location', '$rootScope'];
+SidebarController.$inject = ['$location', '$rootScope', 'AuthService'];

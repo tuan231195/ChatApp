@@ -17,9 +17,18 @@ export class AuthService {
     isLoggedIn() {
         const token = this.getToken();
         if (token) {
-            var payload = JSON.parse(this.window.atob(token.split('.')[1]));
+            let payload = JSON.parse(this.window.atob(token.split('.')[1]));
             //if the token has expired
-            return payload.exp > Date.now() / 1000;
+
+            if (payload.exp > Date.now() / 1000) {
+                return true;
+            }
+            else {
+                if (this.isAnonymous) {
+                    this.deleteAnonymous();
+                }
+                return false;
+            }
         }
         return false;
     }
@@ -27,24 +36,33 @@ export class AuthService {
     currentUser() {
         if (this.isLoggedIn()) {
             const token = this.getToken();
-            var payload = JSON.parse(this.window.atob(token.split('.')[1]));
+            let payload = JSON.parse(this.window.atob(token.split('.')[1]));
             return {
                 id: payload._id,
                 username: payload.username,
-                image: payload.image
+                image: payload.image,
+                isAnonymous: this.isAnonymous
             }
         }
     }
 
     login(user) {
-        var ctrl = this;
+        let ctrl = this;
         return this.http.post('/auth/login', user).then(function (response) {
             ctrl.saveToken(response.data.token);
         });
     }
 
+    loginAnonymous() {
+        let ctrl = this;
+        return this.http.post('/auth/loginAnonymous').then(function (response) {
+            ctrl.saveToken(response.data.token);
+            ctrl.isAnonymous = true;
+        });
+    }
+
     signup(user) {
-        var ctrl = this;
+        let ctrl = this;
         return this.http.post('/auth/register', user).then(function (response) {
             ctrl.saveToken(response.data.token);
         });

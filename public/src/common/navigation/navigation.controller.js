@@ -7,8 +7,8 @@ export default class NavigationController {
     }
 
     logout(){
+        this.chatService.emit("offline", this.authService.currentUser());
         this.authService.logout();
-        this.chatService.emit("logout", this.authService.currentUser());
         this.location.path("/authentication");
         this.window.location.reload();
     }

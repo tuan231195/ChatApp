@@ -7,19 +7,19 @@ export class ChatService {
     connect(user) {
         if (!this.socket) {
             this.socket = io.connect();
-            this.socket.emit("login", user);
+            this.socket.emit("online", user);
             var svc = this;
             this.on("userList", function (users) {
+                console.log("userList");
                 svc.users = users;
                 svc.rootScope.$broadcast("usersChanged", {users: users});
             });
-
         }
         return this.socket;
     }
 
     disconnect(user) {
-        this.socket.emit("logout", user);
+        this.socket.emit("offline", user);
     }
 
     on(eventName, callback) {

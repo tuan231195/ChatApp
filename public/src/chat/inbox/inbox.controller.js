@@ -37,7 +37,8 @@ export default class InboxController {
     }
 
     $onDestroy() {
-        this.chatService.getSocket().removeAllListeners();
+        this.chatService.getSocket().off("newMsg");
+        this.chatService.getSocket().off("allInboxes");
     }
 };
 
