@@ -1,14 +1,17 @@
 <ul class="inbox-nav inbox-divider">
     <li ui-sref-active="active"  ng-if = "!$ctrl.authService.isAnonymous">
-        <a ui-sref = "profile"><i class="fa fa-cog"></i> Settings</a>
+        <a ui-sref = "profile"><i class="fa fa-cog"></i>Settings</a>
     </li>
     <li ui-sref-active="active">
-        <a ui-sref = ".inbox"><i class="fa fa-inbox"></i> Inbox</a>
+        <a ui-sref = ".inbox"><i class="fa fa-inbox"></i>Inbox</a>
     </li>
     <li ui-sref-active="active">
-        <a ui-sref = ".online"><i class="fa fa-users" aria-hidden="true"></i> All Users</a>
+        <a ui-sref = ".chatlist"><i class="fa fa-address-book" aria-hidden="true"></i>All users</a>
+    </li>
+    <li ui-sref-active="active">
+        <a ui-sref = ".online"><i class="fa fa-users" aria-hidden="true"></i>Online</a>
     </li>
     <li>
-        <a ng-click="$ctrl.logout()"><i class="fa fa-sign-out"></i> Log out</a>
+        <a ng-click="$ctrl.logout()"><i class="fa fa-sign-out"></i>Log out</a>
     </li>
 </ul>

@@ -60,7 +60,14 @@ app.use(function (err, req, res, next) {
 });
 
 var http = require('http').Server(app);
-require("./server/controllers/socket.io")(http);
+try
+{
+    require("./server/controllers/socket.io")(http);
+}
+catch(exception){
+    console.error(exception);
+}
+
 
 http.listen(8080, function () {
     "use strict";

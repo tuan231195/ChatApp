@@ -8,7 +8,7 @@
                     <img width="70px" height="70px"
                          ng-src="{{user.image}}"
                          alt="User"
-                         class="user-image img-responsive img-circle"/>
+                         class="user-image img-responsive img-circle" ng-class = "{'blur' : !user.online}"/>
                 </div>
                 <div class="col-sm-12">
                     <div class="user-name">{{user.username}}</div>

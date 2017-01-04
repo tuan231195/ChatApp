@@ -13,6 +13,7 @@ export default class ChatListController {
         }
         let ctrl = this;
         this.currentUser = this.authService.currentUser().username;
+
         ctrl.users = ctrl.chatService.users;
         ctrl.scope.$on("usersChanged", function (event, data) {
             ctrl.users = data.users;

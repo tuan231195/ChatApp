@@ -10,6 +10,10 @@
 .user .user-image {
     margin: 0 auto;
 }
+.user .user-image.blur{
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
 
 .user .user-name {
     margin-top: 20px;

@@ -18,8 +18,7 @@ export class AuthService {
         const token = this.getToken();
         if (token) {
             let payload = JSON.parse(this.window.atob(token.split('.')[1]));
-            //if the token has expired
-
+            //if the token has not expired
             return payload.exp > Date.now() / 1000;
         }
         return false;

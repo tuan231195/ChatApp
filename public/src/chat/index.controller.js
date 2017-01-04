@@ -8,10 +8,7 @@ export default class IndexChatController {
     }
 
     init() {
-        let currentUser = this.authService.currentUser();
         let ctrl = this;
-
-        this.chatService.connect(currentUser);
         this.chatService.on("online", function (user) {
             ctrl.notificationService.success({message: `<b>${user.username}</b> is now online`});
         });

@@ -6,21 +6,28 @@ module.exports = function (http) {
     var io = require('socket.io')(http);
     io.on('connection', function (socket) {
             socket.on("online", function (user) {
-                if (!onlineUserMap[user.username]) {
-                    var isAnonymous = user.isAnonymous || false;
-                    console.log("User " + user.username + " is now online");
-                    onlineUserMap[user.username] = {
-                        socketid: socket.id,
-                        username: user.username,
-                        image: user.image,
-                        isAnonymous: isAnonymous
-                    };
-                    getUserList(function (allUsers) {
-                        io.emit('userList', allUsers);
-                    });
+                var isAnonymous = user.isAnonymous || false;
+                console.log("User " + user.username + " is now connected");
+                if (!onlineUserMap[user.username]){
                     socket.broadcast.emit("online", {username: user.username});
                 }
+                onlineUserMap[user.username] = {
+                    socketid: socket.id,
+                    username: user.username,
+                    image: user.image,
+                    isAnonymous: isAnonymous
+                };
+
+                getUserList(function (allUsers) {
+                    io.emit('userList', allUsers);
+                });
+
+                getOnlineList(function (allUsers) {
+                    io.emit('onlineList', allUsers);
+                });
+
             });
+
 
             socket.on("getUser", function (query) {
                 if (!query.user) {
@@ -135,17 +142,11 @@ module.exports = function (http) {
                 });
             });
         }
-    )
-    ;
+    );
 
 
     function getUserList(callback) {
         var allUsers = [];
-        for (var key in onlineUserMap) {
-            var userObj = onlineUserMap[key].username;
-            user = {username: onlineUserMap[key].username, online: true, image: onlineUserMap[key].image};
-            allUsers.push(user);
-        }
         User.find(function (error, users) {
             if (error) {
                 console.error(error);
@@ -154,19 +155,36 @@ module.exports = function (http) {
             }
             for (var i = 0; i < users.length; i++) {
                 var key = users[i].username;
+                var online;
                 if (!onlineUserMap[key]) {
-                    user = {username: users[i].username, online: false, image: users[i].image};
-                    allUsers.push(user);
+                    online = false;
                 }
+                else {
+                    online = true;
+                }
+                user = {username: users[i].username, online: online, image: users[i].image};
+                allUsers.push(user);
             }
             callback(allUsers);
         });
     }
 
-    function handleOffline(socket, username){
+    function getOnlineList(callback) {
+        var allUsers = [];
+        for (var key in onlineUserMap) {
+            user = {username: onlineUserMap[key].username, image: onlineUserMap[key].image};
+            allUsers.push(user);
+        }
+        callback(allUsers);
+    }
+
+    function handleOffline(socket, username) {
         delete onlineUserMap[username];
         getUserList(function (allUsers) {
             socket.broadcast.emit('userList', allUsers);
+        });
+        getOnlineList(function (allUsers) {
+            socket.broadcast.emit('onlineList', allUsers);
         });
         socket.broadcast.emit("offline", {username: username});
     }

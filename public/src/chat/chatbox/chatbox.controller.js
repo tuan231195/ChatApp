@@ -16,7 +16,6 @@ export default class ChatboxController {
     init() {
         let currentUser = this.authService.currentUser();
         this.chatService.connect(currentUser);
-
         let ctrl = this;
         this.chatService.on("newMsg", function (data) {
             console.log(data);

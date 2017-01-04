@@ -1,6 +1,7 @@
 export default class LoginController {
-    constructor(AuthService, $state) {
+    constructor(AuthService, ChatService, $state) {
         this.authService = AuthService;
+        this.chatService = ChatService;
         this.state = $state;
         this.anonymous = true;
     }
@@ -9,6 +10,9 @@ export default class LoginController {
         let ctrl = this;
         if (this.anonymous) {
             this.authService.loginAnonymous().then(function(){
+                ctrl.chatService.connect();
+                ctrl.chatService.init();
+                ctrl.chatService.emit("online", ctrl.authService.currentUser());
                 ctrl.state.go('index');
             }, function(error){
                 console.error(error);
@@ -17,6 +21,9 @@ export default class LoginController {
         else {
             this.authService.login({username: this.username, password: this.password})
                 .then(function () {
+                    ctrl.chatService.connect();
+                    ctrl.chatService.init();
+                    ctrl.chatService.emit("online", ctrl.authService.currentUser());
                     ctrl.state.go('index');
                 }, function (error) {
                     console.error(error);
@@ -31,4 +38,4 @@ export default class LoginController {
     }
 };
 
-LoginController.$inject = ['AuthService', '$state'];
+LoginController.$inject = ['AuthService', 'ChatService', '$state'];

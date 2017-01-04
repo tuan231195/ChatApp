@@ -29,6 +29,12 @@ export class MainController {
 
         evaluatePath();
 
+        if (AuthService.isLoggedIn()){
+            ChatService.connect();
+            ChatService.init();
+            ChatService.emit("online", AuthService.currentUser());
+        }
+
         $rootScope.$on("$locationChangeSuccess", () => {
             evaluatePath();
         });

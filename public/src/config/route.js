@@ -20,6 +20,10 @@ export default function AuthConfig($stateProvider, $httpProvider, $urlRouterProv
         url: '/inbox',
         template: '<inbox-section></inbox-section>',
         title: 'Inbox'
+    }).state('index.chatlist', {
+        url: '/chatlist',
+        template: '<chatlist-section></chatlist-section>',
+        title: 'All Users'
     }).state('index.online', {
         url: '/online',
         template: '<online-section></online-section>',
