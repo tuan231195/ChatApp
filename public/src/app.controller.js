@@ -2,7 +2,7 @@
 
 export const MAIN_CONTROLLER_NAME = "mainController";
 export class MainController {
-    constructor($state, $rootScope, $location, AuthService, ChatService,  $window) {
+    constructor($state, $rootScope, $scope, $location, AuthService, ChatService, $window) {
         let evaluatePath = () => {
             if ($location.path() === "/authenticate") {
                 $state.go("authenticate.login");
@@ -29,7 +29,7 @@ export class MainController {
 
         evaluatePath();
 
-        if (AuthService.isLoggedIn()){
+        if (AuthService.isLoggedIn()) {
             ChatService.connect();
             ChatService.init();
             ChatService.emit("online", AuthService.currentUser());
@@ -39,13 +39,23 @@ export class MainController {
             evaluatePath();
         });
 
-        $window.onbeforeunload = function(){
+        $scope.isRefresh = function (e) {
+            var keyCode = e.keyCode; //find the key that was just pressed
+            if (keyCode === 116) { //if the key that was pressed is F5, then we know it was a refresh
+                $scope.refresh = true;
+            }
+        };
+
+        $window.onbeforeunload = function () {
             if (AuthService.isAnonymous) {
                 ChatService.disconnect(AuthService.currentUser());
                 AuthService.logout();
+            }
+            if (!$scope.refresh) {
+                ChatService.disconnect(AuthService.currentUser());
             }
         };
     }
 }
 
-MainController.$inject = ['$state', '$rootScope', '$location', 'AuthService', 'ChatService', '$window'];
+MainController.$inject = ['$state', '$rootScope', '$scope', '$location', 'AuthService', 'ChatService', '$window'];

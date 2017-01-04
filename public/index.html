@@ -8,7 +8,7 @@
     <link href="lib/angular-ui-notification/dist/angular-ui-notification.min.css" rel="stylesheet"/>
     <link href="style/main.css" rel="stylesheet"/>
 </head>
-<body ng-controller="mainController">
+<body ng-controller="mainController" ng-keydown="isRefresh($event)">
 <div ui-view></div>
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
