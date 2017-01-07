@@ -1,7 +1,7 @@
+<pagination-section num-items="$ctrl.numItems" page-number="$ctrl.currentPage"></pagination-section>
 <div class="user-list">
     <div class="user-container col-xs-4 col-sm-4 col-md-4 col-lg-3"
-         ng-repeat="user in $ctrl.users | filter : {username: $ctrl.search}"
-         ng-if="user.username !== $ctrl.currentUser">
+         ng-repeat="user in $ctrl.getDisplayedUsers() | filter : {username: $ctrl.search}">
         <a href="#!/chatbox?receiver={{user.username}}">
             <div class="user">
                 <div class="col-sm-12">

@@ -1,0 +1,26 @@
+<div class="pagination" ng-if = "$ctrl.numItems">
+    <li ng-class="{'disabled': $ctrl.pageNumber == 0}">
+        <a ng-click="$ctrl.goToPrev()"><span class="fa fa-caret-left"></span></a>
+    </li>
+    <li ng-if="$ctrl.firstDisplayedPage != 0">
+        <a ng-click="$ctrl.goToPage(0)">1</a>
+    </li>
+    <li ng-if="$ctrl.firstDisplayedPage != 0" class="disabled">
+        <a>..</a>
+    </li>
+    <li ng-repeat="pageIdx in $ctrl.displayedPages" ng-class="{'active': ($ctrl.pageNumber == pageIdx)}">
+        <a ng-if="pageIdx != $ctrl.pageNumber" ng-click="$ctrl.goToPage(pageIdx)">{{pageIdx + 1}}</a>
+        <a ng-if="pageIdx == $ctrl.pageNumber">{{pageIdx + 1}}</a>
+    </li>
+    <li ng-if="$ctrl.lastDisplayedPage != $ctrl.numPages - 1">
+        <a ng-click="$ctrl.goToPage($ctrl.numPages - 1)">1</a>
+    </li>
+    <li ng-if="$ctrl.lastDisplayedPage != $ctrl.numPages - 1" class="disabled">
+        <a>..</a>
+    </li>
+    <li ng-class="{'disabled': $ctrl.pageNumber == $ctrl.numPages - 1}">
+        <a ng-click="$ctrl.goToNext()"><span
+                class="fa fa-caret-right"></span></a>
+    </li>
+</div>
+<div class="clearfix"></div>
