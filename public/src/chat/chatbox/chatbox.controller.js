@@ -1,7 +1,8 @@
 export default class ChatboxController {
-    constructor($state, $scope, AuthService, ChatService, $location, $timeout) {
+    constructor($state, $http, $scope, AuthService, ChatService, $location, $timeout) {
         this.state = $state;
         this.scope = $scope;
+        this.http = $http;
         this.authService = AuthService;
         this.timeout = $timeout;
         this.sender = AuthService.currentUser();
@@ -16,53 +17,57 @@ export default class ChatboxController {
     init() {
         let currentUser = this.authService.currentUser();
         this.chatService.connect(currentUser);
-        let ctrl = this;
-        this.chatService.on("newMsg", function (data) {
+        this.chatService.on("newMsg", (data) => {
             console.log(data);
             let message = {
-                sender: ctrl.receiverName,
-                receiver: ctrl.senderName,
+                sender: this.receiverName,
+                receiver: this.senderName,
                 content: data.content,
                 isSender: false,
                 date: data.date
             };
-            ctrl.messages.push(message);
+            this.messages.push(message);
         });
-        this.chatService.emit("getChat", {user1: this.senderName, user2: this.receiverName});
 
-        this.chatService.emit("getUser", {user: this.receiverName});
+        this.http.get("/chat/single?user1=" + this.receiverName + "&user2=" + this.senderName, {headers: {Authorization: 'Bearer ' + this.authService.getToken()}}).then((response) => {
+            let chat = response.data;
+            if (!chat)
+                return;
 
-        this.chatService.on("user", function (user) {
-            ctrl.receiver = user;
-        });
-        this.chatService.on("chat", function (chat) {
-            angular.forEach(chat.messages, function (msg) {
+            console.log(chat);
+            this.http.get("/chat/user/" + this.receiverName, {headers: {Authorization: 'Bearer ' + this.authService.getToken()}}).then((response) => {
+                this.receiver = response.data;
+            }, (error) => {
+                console.log(error.data);
+            });
+            angular.forEach(chat.messages, (msg) => {
                 let message = {};
                 if (msg.order) {
-                    message.isSender = (chat.user1 === ctrl.senderName);
+                    message.isSender = (chat.user1 === this.senderName);
                 }
                 else {
-                    message.isSender = (chat.user2 === ctrl.senderName);
+                    message.isSender = (chat.user2 === this.senderName);
                 }
                 message.content = msg.body;
                 message.date = msg.date;
-                message.sender = (message.isSender) ? ctrl.senderName : ctrl.receiverName;
-                message.receiver = (message.isSender) ? ctrl.receiverName : ctrl.senderName;
-
-
-                ctrl.messages.push(message);
+                message.sender = (message.isSender) ? this.senderName : this.receiverName;
+                message.receiver = (message.isSender) ? this.receiverName : this.senderName;
+                this.messages.push(message);
             });
+        }, (error) => {
+            console.log(error.data);
         });
 
-        this.chatService.on("typing", function (user) {
-            if (user.username === ctrl.receiverName) {
-                ctrl.showTyping = true;
+
+        this.chatService.on("typing", (user) => {
+            if (user.username === this.receiverName) {
+                this.showTyping = true;
             }
         });
 
-        this.chatService.on("untyping", function (user) {
-            if (user.username === ctrl.receiverName) {
-                ctrl.showTyping = false;
+        this.chatService.on("untyping", (user) => {
+            if (user.username === this.receiverName) {
+                this.showTyping = false;
             }
         });
     }
@@ -93,13 +98,12 @@ export default class ChatboxController {
     }
 
     stopTyping() {
-        let ctrl = this;
         this.isTyping = false;
-        this.timeout(function () {
-            if (ctrl.isTyping) {
+        this.timeout(() => {
+            if (this.isTyping) {
                 return;
             }
-            ctrl.chatService.emit("untyping", {sender: ctrl.senderName, receiver: ctrl.receiverName});
+            this.chatService.emit("untyping", {sender: this.senderName, receiver: this.receiverName});
         }, 1000);
     }
 
@@ -112,4 +116,4 @@ export default class ChatboxController {
     }
 };
 
-ChatboxController.$inject = ['$state', '$scope', 'AuthService', 'ChatService', '$location', '$timeout'];
+ChatboxController.$inject = ['$state', '$http', '$scope', 'AuthService', 'ChatService', '$location', '$timeout'];

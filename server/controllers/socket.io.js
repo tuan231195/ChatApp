@@ -8,7 +8,7 @@ module.exports = function (http) {
             socket.on("online", function (user) {
                 var isAnonymous = user.isAnonymous || false;
                 console.log("User " + user.username + " is now connected");
-                if (!onlineUserMap[user.username]){
+                if (!onlineUserMap[user.username]) {
                     socket.broadcast.emit("online", {username: user.username});
                 }
                 onlineUserMap[user.username] = {
@@ -28,20 +28,6 @@ module.exports = function (http) {
 
             });
 
-
-            socket.on("getUser", function (query) {
-                if (!query.user) {
-                    return;
-                }
-                User.findOne({"username": query.user}, function (err, user) {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                    tmp = {username: user.username, image: user.image};
-                    socket.emit("user", tmp);
-                });
-            });
             socket.on("offline", function (user) {
                     var username = user.username;
                     console.log("User " + user.username + " is now offline");
@@ -73,18 +59,6 @@ module.exports = function (http) {
                 }
             );
 
-            socket.on("getAll", function (user) {
-                updateInboxes(socket, user);
-            });
-
-
-            socket.on("getChat", function (chat) {
-                getChatForUsers(chat.user1, chat.user2, function (chat) {
-                    if (chat) {
-                        socket.emit("chat", chat);
-                    }
-                });
-            });
 
             socket.on("typing", function (chat) {
                 if (onlineUserMap[chat.receiver]) {
@@ -211,34 +185,4 @@ module.exports = function (http) {
             }
         });
     }
-
-    function getUserInboxes(user, callback) {
-        Chat.find({
-            "$or": [{
-                "user1": user,
-            }, {
-                "user2": user,
-            }]
-        }).exec(function (err, allChats) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            if (allChats) {
-                callback(allChats);
-            }
-            else {
-                callback(null);
-            }
-        });
-    }
-
-    function updateInboxes(socket, user) {
-        getUserInboxes(user.username, function (allInboxes) {
-            if (allInboxes) {
-                socket.emit("allInboxes", allInboxes);
-            }
-        });
-    }
-}
-;
+};

@@ -13,7 +13,7 @@
 }
 
 .inbox-head .title {
-    margin-left: 40px;
+    margin-left: 20px;
     margin-top: 5px;
 }
 
@@ -117,7 +117,7 @@ ul.inbox-nav li a span.label {
     background: none repeat scroll 0 0 #41cac0;
     border-radius: 0 4px 0 0;
     color: #fff;
-    min-height: 80px;
+    height: 80px;
     padding: 20px;
 }
 
@@ -125,7 +125,6 @@ ul.inbox-nav li a span.label {
     display: inline-block;
     font-weight: 300;
     margin: 0;
-    padding-top: 6px;
 }
 
 .inbox-head .sr-input {

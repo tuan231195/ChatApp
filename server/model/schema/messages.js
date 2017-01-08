@@ -10,6 +10,8 @@ var chatSchema = new mongoose.Schema({
     user1: {type: String, required: true},
     user2: {type: String, required: true},
     lastChatTime: {type: Date, default: Date.now()},
+    lastUser1Seen: {type: Date},
+    lastUser2Seen: {type: Date},
     lastMessage: {type: String},
     messages: [messageSchema]
 });

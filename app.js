@@ -12,6 +12,7 @@ require('./server/config/passport');
 
 var authentication = require('./server/routes/authentication');
 var profile = require("./server/routes/profile");
+var chat = require("./server/routes/chat");
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use(passport.initialize());
 // app.use('/', routes);
 app.use('/auth', authentication);
 app.use('/profile', profile);
+app.use('/chat', chat);
 
 app.use(function (req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -60,11 +62,10 @@ app.use(function (err, req, res, next) {
 });
 
 var http = require('http').Server(app);
-try
-{
+try {
     require("./server/controllers/socket.io")(http);
 }
-catch(exception){
+catch (exception) {
     console.error(exception);
 }
 
