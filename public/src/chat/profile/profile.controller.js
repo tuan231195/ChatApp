@@ -12,6 +12,7 @@ export default class ProfileController {
         this.scope = $scope;
         this.profileService = ProfileService;
         this.timeout = $timeout;
+        this.window = $window;
         let ctrl = this;
         this.scope.$on("closeModal", function (event, data) {
             ctrl.closeModal();
@@ -19,7 +20,7 @@ export default class ProfileController {
     }
 
     goBack() {
-        this.state.go("index");
+        this.window.history.back();
     }
 
 
@@ -69,4 +70,4 @@ export default class ProfileController {
     }
 };
 
-ProfileController.$inject = ['AuthService', '$uibModal', '$scope', "$state", "ProfileService", "$timeout"];
+ProfileController.$inject = ['AuthService', '$uibModal', '$scope', "$state", "ProfileService", "$timeout", "$window"];

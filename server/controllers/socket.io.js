@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var getChatForUsers = require("./chat").getChatForUsers;
 var User = mongoose.model("User");
 var Chat = mongoose.model("Chat");
 module.exports = function (http) {
@@ -161,28 +162,5 @@ module.exports = function (http) {
             socket.broadcast.emit('onlineList', allUsers);
         });
         socket.broadcast.emit("offline", {username: username});
-    }
-
-    function getChatForUsers(user1, user2, callback) {
-        Chat.find({
-            "$or": [{
-                "user1": user1,
-                "user2": user2
-            }, {
-                "user1": user2,
-                "user2": user1
-            }]
-        }).exec(function (err, chat) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            if (chat && chat.length !== 0) {
-                callback(chat[0]);
-            }
-            else {
-                callback(null);
-            }
-        });
     }
 };

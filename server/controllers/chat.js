@@ -52,6 +52,48 @@ module.exports.getChat = function (req, res) {
     var user1 = req.query.user1;
     var user2 = req.query.user2;
 
+    try {
+        getChatForUsers(user1, user2, function (chat) {
+            sendJSONresponse(res, 200, chat);
+        });
+    }
+    catch (e) {
+        console.error(e);
+        sendJSONresponse(res, 500, {error: "Cannot find chat"});
+    }
+};
+
+module.exports.updateSeenTime = function (req, res) {
+    if (!req.params.user1 || !req.params.user2) {
+        sendJSONresponse(res, 400, {error: "Users are required"});
+        return;
+    }
+    var user1 = req.params.user1;
+    var user2 = req.params.user2;
+    getChatForUsers(user1, user2, function (chat) {
+        if (chat) {
+            if (chat.user2 == user2) {
+                chat.lastUser2Seen = new Date();
+            }
+            else {
+                chat.lastUser1Seen = new Date();
+            }
+            chat.save(function (err) {
+                if (err) {
+                    sendJSONresponse(res, 500, {error: "Failed to update chat"});
+                    return;
+                }
+                sendJSONresponse(res, 200, {});
+            });
+        }
+        else {
+            sendJSONresponse(res, 404, {error: "Chat not found"});
+        }
+    });
+};
+
+
+function getChatForUsers(user1, user2, callback) {
     Chat.findOne({
         "$or": [{
             "user1": user1,
@@ -62,15 +104,12 @@ module.exports.getChat = function (req, res) {
         }]
     }, function (err, chat) {
         if (err) {
-            sendJSONresponse(res, 500, {error: "Cannot find chat"});
-            console.error(err);
-            return;
+            throw err;
         }
-        sendJSONresponse(res, 200, chat);
+        callback(chat);
     });
-};
+}
 
-module.exports.updateSeenTime = function (req, res) {
+module.exports.getChatForUsers = getChatForUsers;
 
-};
 

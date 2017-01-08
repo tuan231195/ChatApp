@@ -1,5 +1,5 @@
 export default class ChatboxController {
-    constructor($state, $http, $scope, AuthService, ChatService, $location, $timeout) {
+    constructor($state, $http, $scope, AuthService, ChatService, $location, $timeout, $window) {
         this.state = $state;
         this.scope = $scope;
         this.http = $http;
@@ -11,6 +11,7 @@ export default class ChatboxController {
         this.receiverName = $location.search().receiver;
         this.showTyping = false;
         this.messages = [];
+        this.window = $window;
         this.init();
     }
 
@@ -38,7 +39,7 @@ export default class ChatboxController {
             this.http.get("/chat/user/" + this.receiverName, {headers: {Authorization: 'Bearer ' + this.authService.getToken()}}).then((response) => {
                 this.receiver = response.data;
             }, (error) => {
-                console.log(error.data);
+                console.error(error.data);
             });
             angular.forEach(chat.messages, (msg) => {
                 let message = {};
@@ -55,7 +56,7 @@ export default class ChatboxController {
                 this.messages.push(message);
             });
         }, (error) => {
-            console.log(error.data);
+            console.error(error.data);
         });
 
 
@@ -73,7 +74,7 @@ export default class ChatboxController {
     }
 
     goBack() {
-        this.state.go("index.online");
+        this.window.history.back();
     }
 
     send() {
@@ -108,12 +109,18 @@ export default class ChatboxController {
     }
 
     $onDestroy() {
-        this.chatService.getSocket().off("newMsg");
-        this.chatService.getSocket().off("user");
-        this.chatService.getSocket().off("chat");
-        this.chatService.getSocket().off("typing");
-        this.chatService.getSocket().off("untyping");
+        if (this.messages.length != 0) {
+            this.http.post("/chat/updateSeenTime/" + this.receiverName + "/" + this.senderName, {}, {headers: {Authorization: 'Bearer ' + this.authService.getToken()}}).then(() => {
+            }, (error) => {
+                console.error(error.data);
+            });
+            this.chatService.getSocket().off("newMsg");
+            this.chatService.getSocket().off("user");
+            this.chatService.getSocket().off("chat");
+            this.chatService.getSocket().off("typing");
+            this.chatService.getSocket().off("untyping");
+        }
     }
 };
 
-ChatboxController.$inject = ['$state', '$http', '$scope', 'AuthService', 'ChatService', '$location', '$timeout'];
+ChatboxController.$inject = ['$state', '$http', '$scope', 'AuthService', 'ChatService', '$location', '$timeout', '$window'];

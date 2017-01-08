@@ -39,9 +39,21 @@ export default class InboxController {
                 message.from = (inbox.user1 === this.senderName) ? inbox.user2 : inbox.user1;
                 message.content = inbox.lastMessage;
                 message.date = inbox.lastChatTime;
+                let lastUser1Seen = inbox.lastUser1Seen;
+                let lastUser2Seen = inbox.lastUser2Seen;
+                if (inbox.user1 === this.senderName){
+                    if (!lastUser1Seen || lastUser1Seen < inbox.lastChatTime){
+                        message.unread = true;
+                    }
+                }
+                else {
+                    if (!lastUser2Seen || lastUser2Seen < inbox.lastChatTime){
+                        message.unread = true;
+                    }
+                }
                 this.messages.push(message);
             });
-        }, (error) => console.log(error.data));
+        }, (error) => console.error(error.data));
     }
 };
 

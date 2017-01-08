@@ -11,6 +11,6 @@ var auth = jwt({
 router.get('/user/:username', auth, controllers.getUser);
 router.get('/', auth, controllers.getChats);
 router.get('/single', auth, controllers.getChat);
-router.post('/updateSeenTime/:id/:username', auth, controllers.updateSeenTime);
+router.post('/updateSeenTime/:user1/:user2', auth, controllers.updateSeenTime);
 
 module.exports = router;
