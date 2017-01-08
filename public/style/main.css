@@ -5,6 +5,7 @@
 @import 'nav.css';
 @import 'chatbox.css';
 @import 'profile.css';
+@import 'extra.css';
 
 body {
     font-family: 'Vollkorn', serif;

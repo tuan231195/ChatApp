@@ -111,10 +111,10 @@
     border-radius: 5px;
     position: relative;
     padding: 5px 10px;
-    background: #d2d6de;
-    border: 1px solid #d2d6de;
+    background: #00a65a;
+    border-color: #00a65a;
     margin: 5px 0 0 50px;
-    color: #444;
+    color: #fff;
 }
 
 .direct-chat-text:after, .direct-chat-text:before {
@@ -122,7 +122,7 @@
     right: 100%;
     top: 15px;
     border: solid transparent;
-    border-right-color: #d2d6de;
+    border-right-color: #00a65a;
     content: ' ';
     height: 0;
     width: 0;
@@ -176,28 +176,22 @@
     color: #999;
 }
 
-.direct-chat-info .right > .direct-chat-text {
-    background: #00c0ef;
-    border-color: #00c0ef;
-    color: #fff;
-}
-
-.direct-chat-info .right > .direct-chat-text:after, .direct-chat-info .right > .direct-chat-text:before {
-    border-left-color: #00c0ef;
-}
-
 .direct-chat-success .right > .direct-chat-text {
-    background: #00a65a;
-    border-color: #00a65a;
-    color: #fff;
+    background: #d2d6de;
+    border: 1px solid #d2d6de;
+    color: #444;
 }
 
 .direct-chat-success .right > .direct-chat-text:after, .direct-chat-success .right > .direct-chat-text:before {
-    border-left-color: #00a65a;
+    border-left-color: #d2d6de;
 }
 
 .typing {
     margin-left: 10px;
     margin-bottom: 5px;
+    color: #aaa;
+}
+
+.seen{
     color: #aaa;
 }

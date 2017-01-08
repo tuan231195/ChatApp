@@ -12,11 +12,11 @@
                     <div class="direct-chat-messages" scroll = "$ctrl.messages">
                         <!-- Message. Default to the left -->
                         <div class="direct-chat-msg" ng-repeat="message in $ctrl.messages"
-                             ng-class="{'right': message.isSender}">
+                             ng-class="{'right': !message.isSender}">
                             <div class="direct-chat-info clearfix">
-                                <span class="direct-chat-name" ng-class="!message.isSender?'pull-right': 'pull-left'">{{message.sender}}</span>
+                                <span class="direct-chat-name" ng-class="!message.isSender?'pull-left': 'pull-right'">{{message.sender}}</span>
                                 <span class="direct-chat-timestamp"
-                                      ng-class="!message.isSender?'pull-left': 'pull-right'">{{message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
+                                      ng-class="!message.isSender?'pull-right': 'pull-left'">{{message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
                             </div>
                             <!-- /.direct-chat-info -->
                             <img class="direct-chat-img" ng-src="{{message.isSender && $ctrl.sender.image || $ctrl.receiver.image}}"
@@ -24,6 +24,7 @@
                             <div class="direct-chat-text">
                                 {{message.content}}
                             </div>
+                            <div class = "small pull-right seen" ng-hide = "$ctrl.showTyping" ng-if = "$ctrl.displaySeen && $last"> Seen at {{$ctrl.seenMessage}}</div>
                             <!-- /.direct-chat-text -->
                         </div>
                         <!-- /.direct-chat-msg -->

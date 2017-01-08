@@ -11,6 +11,7 @@ export default class ChatboxController {
         this.receiverName = $location.search().receiver;
         this.showTyping = false;
         this.messages = [];
+        this.displaySeen = false;
         this.window = $window;
         this.init();
     }
@@ -27,37 +28,66 @@ export default class ChatboxController {
                 isSender: false,
                 date: data.date
             };
+            this.displaySeen = null;
             this.messages.push(message);
         });
 
         this.http.get("/chat/single?user1=" + this.receiverName + "&user2=" + this.senderName, {headers: {Authorization: 'Bearer ' + this.authService.getToken()}}).then((response) => {
-            let chat = response.data;
-            if (!chat)
-                return;
+                let chat = response.data;
+                if (!chat)
+                    return;
 
-            console.log(chat);
-            this.http.get("/chat/user/" + this.receiverName, {headers: {Authorization: 'Bearer ' + this.authService.getToken()}}).then((response) => {
-                this.receiver = response.data;
-            }, (error) => {
+                console.log(chat);
+                this.http.get("/chat/user/" + this.receiverName, {headers: {Authorization: 'Bearer ' + this.authService.getToken()}}).then((response) => {
+                    this.receiver = response.data;
+                }, (error) => {
+                    console.error(error.data);
+                });
+                angular.forEach(chat.messages, (msg) => {
+                    let message = {};
+                    if (msg.order) {
+                        message.isSender = (chat.user1 === this.senderName);
+                    }
+                    else {
+                        message.isSender = (chat.user2 === this.senderName);
+                    }
+                    message.content = msg.body;
+                    message.date = msg.date;
+                    message.sender = (message.isSender) ? this.senderName : this.receiverName;
+                    message.receiver = (message.isSender) ? this.receiverName : this.senderName;
+                    this.messages.push(message);
+                });
+                if (this.messages.length > 0 && this.messages[this.messages.length - 1].isSender) {
+                    if (chat.user1 === this.receiverName) {
+                        if (chat.lastUser1Seen > chat.lastChatTime) {
+                            this.displaySeen = chat.lastUser1Seen;
+                        }
+                    }
+                    else {
+                        if (chat.lastUser2Seen > chat.lastChatTime) {
+                            this.displaySeen = chat.lastUser2Seen;
+                        }
+                    }
+                }
+                if (this.displaySeen) {
+                    let current = new Date().setHours(0, 0, 0, 0);
+                    let previous = new Date(this.displaySeen).setHours(0, 0, 0, 0);
+
+                    if (current === previous) {
+                        let seenTime = new Date(this.displaySeen);
+                        this.seenMessage = ("0" + seenTime.getHours()).slice(-2) + ":" + ("0" + seenTime.getMinutes()).slice(-2);
+                    }
+                    else {
+                        let seenTime = new Date(this.displaySeen);
+                        this.seenMessage = ("0" + seenTime.getDate()).slice(-2) + "-" + ("0" + (seenTime.getMonth() + 1)).slice(-2) + "-" +
+                            seenTime.getFullYear() + " " + ("0" + seenTime.getHours()).slice(-2) + ":" + ("0" + seenTime.getMinutes()).slice(-2);
+                    }
+                }
+            },
+            (error) => {
                 console.error(error.data);
-            });
-            angular.forEach(chat.messages, (msg) => {
-                let message = {};
-                if (msg.order) {
-                    message.isSender = (chat.user1 === this.senderName);
-                }
-                else {
-                    message.isSender = (chat.user2 === this.senderName);
-                }
-                message.content = msg.body;
-                message.date = msg.date;
-                message.sender = (message.isSender) ? this.senderName : this.receiverName;
-                message.receiver = (message.isSender) ? this.receiverName : this.senderName;
-                this.messages.push(message);
-            });
-        }, (error) => {
-            console.error(error.data);
-        });
+            }
+        );
 
 
         this.chatService.on("typing", (user) => {
