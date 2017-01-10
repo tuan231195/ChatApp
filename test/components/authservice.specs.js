@@ -3,7 +3,7 @@ describe('Auth service', function () {
     var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ODViNjYxMTg5ZWEzZjA4NzM3N2Y2ODEiLCJ1c2VybmFtZSI6InZkdG4zNTkiLCJleHAiOjE0ODI5ODk3MTMsImltYWdlIjoidXNlcjEucG5nIiwiaWF0IjoxNDgyMzg0OTEzfQ.3kioZLFd0ooa0rJ3";
 
 
-    beforeEach(module('auth'));
+    beforeEach(module('ChatApp'));
 
     beforeEach(inject(function ($window, $httpBackend, AuthService) {
         $http = $httpBackend;
@@ -17,14 +17,14 @@ describe('Auth service', function () {
     });
 
     it('should be logged in', function () {
-        $http.expectPOST('/api/login').respond({token: token});
+        $http.expectPOST('/auth/login').respond({token: token});
         authService.login({"username": "tnguyen", "password": "123456"});
         $http.flush();
         expect(authService.saveToken).toHaveBeenCalledWith(token);
     });
 
     it('should be signed up', function () {
-        $http.expectPOST('/api/register').respond({token: token});
+        $http.expectPOST('/auth/register').respond({token: token});
         authService.signup({"username": "tnguyen", "password": "123456"});
         $http.flush();
         expect(authService.saveToken).toHaveBeenCalledWith(token);

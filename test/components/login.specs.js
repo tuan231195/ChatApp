@@ -1,7 +1,7 @@
 describe('Login component', function () {
     var controller, parentScope, scope, element;
 
-    beforeEach(module('auth',  'ui.router'));
+    beforeEach(module('ChatApp',  'ui.router'));
 
     beforeEach(inject(function ($rootScope, $q, $compile, $componentController, AuthService, $state) {
         parentScope = $rootScope.$new();
@@ -23,6 +23,7 @@ describe('Login component', function () {
     it('should login', function(){
         controller.username = "vdtn359";
         controller.password = "test1243";
+        controller.anonymous = false;
         controller.doLogin();
         expect(mock.authService.login).toHaveBeenCalled();
     });

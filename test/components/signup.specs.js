@@ -1,7 +1,7 @@
 describe('Signup component', function () {
     var controller, parentScope, scope, element;
 
-    beforeEach(module('auth', 'ui.router'));
+    beforeEach(module('ChatApp', 'ui.router'));
 
     beforeEach(inject(function ($rootScope, $q, $compile, $componentController, AuthService, $state) {
         parentScope = $rootScope.$new();

@@ -17,8 +17,9 @@ module.exports = function (config) {
         files: [
             './node_modules/angular/angular.js',
             './node_modules/angular-mocks/angular-mocks.js',
+            './node_modules/socket.io-client/dist/socket.io.js',
+            './public/lib/angular-ui-notification/dist/angular-ui-notification.min.js',
             './public/scripts/app.js',
-            './public/templates/**/*.html',
             './test/components/login.specs.js',
             './test/components/signup.specs.js',
             './test/components/route.specs.js',

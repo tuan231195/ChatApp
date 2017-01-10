@@ -57,6 +57,7 @@ describe('Route component', function () {
     describe("redirecting", function(){
         it('should go to login', function () {
             spyOn(AuthService, "isLoggedIn").and.returnValue(false);
+            spyOn(AuthService, "currentUser").and.returnValue({username: "vdtn359"});
             spyOn($state, "go");
             scope = $rootScope.$new();
             $location.path("index");
@@ -67,6 +68,7 @@ describe('Route component', function () {
 
         it('should go to index', function () {
             spyOn(AuthService, "isLoggedIn").and.returnValue(true);
+            spyOn(AuthService, "currentUser").and.returnValue({username: "vdtn359"});
             spyOn($state, "go");
             scope = $rootScope.$new();
             $location.path("authenticate.login");
